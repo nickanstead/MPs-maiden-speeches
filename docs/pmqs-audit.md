@@ -1,19 +1,12 @@
-# PMQs reuse audit — initial inventory
+# PMQs read-only source audit
 
-Read-only reference: https://github.com/nickanstead/PMQs
+Reviewed [PMQs at ec68459](https://github.com/nickanstead/PMQs/tree/ec6845906cb161c183de1cce429df1069db9376c).
 
-The PMQs README documents annual CSVs in `data/pmqs/`, diagnostics in `data/diagnostics/`, historical speaker resolution in `data/reference/`, collection scripts in `scripts/`, and automated workflows in `.github/workflows/`.
+| PMQs source | Method assessed and pilot decision |
+| --- | --- |
+| `scripts/resolve_names.py` | Checks dated memberships and uses forenames and constituency context to distinguish similar Hansard speaker names. The pilot adapts the dated join, requiring a unique identity keyed by surname and seat or parliamentary ID. |
+| `scripts/enrich_parties.py` | Combines election winners and dated defection exceptions. Its nearest-general-election fallback for by-elections can span a party change. The pilot uses the contemporary affiliation reported by the maiden-speech index and checks explicit exceptions against parliamentary evidence. |
+| `scripts/extract_pmqs.py` | Separates retrieval, transcription and annual CSV output, and reports missing source material. The pilot uses the same approach but starts from the official maiden-speech index and Hansard contribution anchors. |
+| `data/reference/{historic_hansard_matches,manual_names,ambiguous_names}.csv` | Match status, stable person IDs and explicit ambiguity or override evidence are useful patterns. PMQs rows are exchange-specific, so the pilot builds its own matches and exceptions. |
 
-Sources documented there include ParlParse/TheyWorkForYou, historic Hansard, and UK general election data.
-
-## Reuse candidates
-- historical MP name matching and identification provenance
-- date-specific party attribution and party-switch handling
-- diagnostics and reproducible collection patterns
-- GitHub Actions conventions
-
-## Limitations
-PMQs includes questioners, not all MPs. Its roles and party metadata must not be copied across dates without checking. Maiden-speech extraction needs a distinct identification method.
-
-## Next audit step
-Inspect actual script files and historical reference formats before copying or adapting code. This is an initial README-level assessment, not yet a completed source-code audit.
+No PMQs code, exchange records or metadata rows were imported into this repository.
