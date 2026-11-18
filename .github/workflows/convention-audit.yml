@@ -1,0 +1,31 @@
+name: Maiden speech convention audit
+on:
+  push:
+    branches: [pilot-1961-1965]
+    paths:
+      - 'scripts/convention_audit.py'
+      - '.github/workflows/convention-audit.yml'
+      - 'data/maiden_speeches/**'
+      - 'data/unresolved.csv'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements.txt
+      - name: Screen parliamentary conventions
+        run: python scripts/convention_audit.py
+      - name: Upload evidence and summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: maiden-convention-evidence
+          path: |
+            data/convention_evidence.csv
+            data/convention_summary.json
+          if-no-files-found: error
